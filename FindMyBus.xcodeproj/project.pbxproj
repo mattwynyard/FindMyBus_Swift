@@ -8,13 +8,15 @@
 
 /* Begin PBXBuildFile section */
 		C97694CB20DB91DA004FCC02 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C97694CA20DB91DA004FCC02 /* AppDelegate.swift */; };
-		C97694CD20DB91DA004FCC02 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C97694CC20DB91DA004FCC02 /* ViewController.swift */; };
 		C97694D020DB91DA004FCC02 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C97694CE20DB91DA004FCC02 /* Main.storyboard */; };
 		C97694D320DB91DA004FCC02 /* FindMyBus.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = C97694D120DB91DA004FCC02 /* FindMyBus.xcdatamodeld */; };
 		C97694D520DB91DA004FCC02 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C97694D420DB91DA004FCC02 /* Assets.xcassets */; };
 		C97694D820DB91DA004FCC02 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C97694D620DB91DA004FCC02 /* LaunchScreen.storyboard */; };
 		C97694E320DB91DA004FCC02 /* FindMyBusTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C97694E220DB91DA004FCC02 /* FindMyBusTests.swift */; };
 		C97694EE20DB91DA004FCC02 /* FindMyBusUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C97694ED20DB91DA004FCC02 /* FindMyBusUITests.swift */; };
+		C97694FE20DB9243004FCC02 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C97694FB20DB9243004FCC02 /* ViewController.swift */; };
+		C97694FF20DB9243004FCC02 /* APIRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = C97694FC20DB9243004FCC02 /* APIRequest.swift */; };
+		C976950020DB9243004FCC02 /* Bus.swift in Sources */ = {isa = PBXBuildFile; fileRef = C97694FD20DB9243004FCC02 /* Bus.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -37,7 +39,6 @@
 /* Begin PBXFileReference section */
 		C97694C720DB91DA004FCC02 /* FindMyBus.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FindMyBus.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C97694CA20DB91DA004FCC02 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		C97694CC20DB91DA004FCC02 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		C97694CF20DB91DA004FCC02 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		C97694D220DB91DA004FCC02 /* FindMyBus.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = FindMyBus.xcdatamodel; sourceTree = "<group>"; };
 		C97694D420DB91DA004FCC02 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -49,6 +50,9 @@
 		C97694E920DB91DA004FCC02 /* FindMyBusUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FindMyBusUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C97694ED20DB91DA004FCC02 /* FindMyBusUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindMyBusUITests.swift; sourceTree = "<group>"; };
 		C97694EF20DB91DA004FCC02 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C97694FB20DB9243004FCC02 /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		C97694FC20DB9243004FCC02 /* APIRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIRequest.swift; sourceTree = "<group>"; };
+		C97694FD20DB9243004FCC02 /* Bus.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Bus.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -100,8 +104,10 @@
 			isa = PBXGroup;
 			children = (
 				C97694CA20DB91DA004FCC02 /* AppDelegate.swift */,
-				C97694CC20DB91DA004FCC02 /* ViewController.swift */,
 				C97694CE20DB91DA004FCC02 /* Main.storyboard */,
+				C97694FC20DB9243004FCC02 /* APIRequest.swift */,
+				C97694FD20DB9243004FCC02 /* Bus.swift */,
+				C97694FB20DB9243004FCC02 /* ViewController.swift */,
 				C97694D420DB91DA004FCC02 /* Assets.xcassets */,
 				C97694D620DB91DA004FCC02 /* LaunchScreen.storyboard */,
 				C97694D920DB91DA004FCC02 /* Info.plist */,
@@ -259,9 +265,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C97694CD20DB91DA004FCC02 /* ViewController.swift in Sources */,
+				C97694FE20DB9243004FCC02 /* ViewController.swift in Sources */,
 				C97694D320DB91DA004FCC02 /* FindMyBus.xcdatamodeld in Sources */,
+				C97694FF20DB9243004FCC02 /* APIRequest.swift in Sources */,
 				C97694CB20DB91DA004FCC02 /* AppDelegate.swift in Sources */,
+				C976950020DB9243004FCC02 /* Bus.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
