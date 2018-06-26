@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C9121F5720E210B400A9A813 /* arrow32px.png in Resources */ = {isa = PBXBuildFile; fileRef = C9121F5620E210B400A9A813 /* arrow32px.png */; };
+		C9121F5B20E218A300A9A813 /* arrow16px.png in Resources */ = {isa = PBXBuildFile; fileRef = C9121F5A20E218A300A9A813 /* arrow16px.png */; };
 		C97694CB20DB91DA004FCC02 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C97694CA20DB91DA004FCC02 /* AppDelegate.swift */; };
 		C97694D020DB91DA004FCC02 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C97694CE20DB91DA004FCC02 /* Main.storyboard */; };
 		C97694D320DB91DA004FCC02 /* FindMyBus.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = C97694D120DB91DA004FCC02 /* FindMyBus.xcdatamodeld */; };
@@ -37,6 +39,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		C9121F5620E210B400A9A813 /* arrow32px.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = arrow32px.png; path = Images/arrow32px.png; sourceTree = "<group>"; };
+		C9121F5A20E218A300A9A813 /* arrow16px.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = arrow16px.png; path = Images/arrow16px.png; sourceTree = "<group>"; };
 		C97694C720DB91DA004FCC02 /* FindMyBus.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FindMyBus.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C97694CA20DB91DA004FCC02 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C97694CF20DB91DA004FCC02 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -83,6 +87,8 @@
 		C97694BE20DB91DA004FCC02 = {
 			isa = PBXGroup;
 			children = (
+				C9121F5A20E218A300A9A813 /* arrow16px.png */,
+				C9121F5620E210B400A9A813 /* arrow32px.png */,
 				C97694C920DB91DA004FCC02 /* FindMyBus */,
 				C97694E120DB91DA004FCC02 /* FindMyBusTests */,
 				C97694EC20DB91DA004FCC02 /* FindMyBusUITests */,
@@ -239,6 +245,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				C97694D820DB91DA004FCC02 /* LaunchScreen.storyboard in Resources */,
+				C9121F5720E210B400A9A813 /* arrow32px.png in Resources */,
+				C9121F5B20E218A300A9A813 /* arrow16px.png in Resources */,
 				C97694D520DB91DA004FCC02 /* Assets.xcassets in Resources */,
 				C97694D020DB91DA004FCC02 /* Main.storyboard in Resources */,
 			);

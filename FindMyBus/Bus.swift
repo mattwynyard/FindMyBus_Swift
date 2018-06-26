@@ -14,12 +14,14 @@ class Bus: NSObject, MKAnnotation {
     let subtitle: String?
     let discipline: String
     let coordinate: CLLocationCoordinate2D
+    var image: UIImage? = nil
     
     init(title: String, subtitle: String, discipline: String, coordinate: CLLocationCoordinate2D) {
         self.title = title
         self.subtitle = subtitle
         self.discipline = discipline
         self.coordinate = coordinate
+        //self.image
         
         super.init()
     } //end init

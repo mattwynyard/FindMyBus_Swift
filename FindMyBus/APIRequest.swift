@@ -8,15 +8,16 @@
 
 import Foundation
 
-internal protocol APIRequestDelegate {
+internal protocol APIRequestDelegate: class {
     
     func getData(data: Data)
+    //func removeAnnotations()
 }
 
 class APIRequest: NSObject {
 
-    private var jsonResponse: String?
-    var delegate: APIRequestDelegate?
+    //private var jsonResponse: String?
+    weak var delegate: APIRequestDelegate?
 
 func httpGet(url: String, query: String, callback: @escaping (Data, String?) -> Void) {
     
@@ -40,19 +41,19 @@ func httpGet(url: String, query: String, callback: @escaping (Data, String?) -> 
 } //end func
 
 func sendRoutes(url: String, query: String) {
-    
-    httpGet(url: url, query: query) { (data, error) -> Void in
-        if error != nil {
-            print(error!)
-        } else {
-            print("Sending Request..")
-            let str = String.init(data: data, encoding: .utf8)
-            self.jsonResponse = str
-            self.delegate?.getData(data: data)
 
-            
-        } //end else
-    } //end closure
+    //DispatchQueue.main.async (execute: { () -> Void in
+        self.httpGet(url: url, query: query) { (data, error) -> Void in
+            if error != nil {
+                print(error!)
+            } else {
+                print("Sending Request..")
+                //self.delegate?.removeAnnotations()
+                self.delegate?.getData(data: data)
+               
+            }
+        } //end closure
+    //})
 } //end fun
 
 }//end class
