@@ -84,6 +84,13 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		C9121F5C20E2479E00A9A813 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		C97694BE20DB91DA004FCC02 = {
 			isa = PBXGroup;
 			children = (
@@ -93,6 +100,7 @@
 				C97694E120DB91DA004FCC02 /* FindMyBusTests */,
 				C97694EC20DB91DA004FCC02 /* FindMyBusUITests */,
 				C97694C820DB91DA004FCC02 /* Products */,
+				C9121F5C20E2479E00A9A813 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -208,6 +216,11 @@
 				TargetAttributes = {
 					C97694C620DB91DA004FCC02 = {
 						CreatedOnToolsVersion = 9.4.1;
+						SystemCapabilities = {
+							com.apple.Maps.iOS = {
+								enabled = 0;
+							};
+						};
 					};
 					C97694DD20DB91DA004FCC02 = {
 						CreatedOnToolsVersion = 9.4.1;
@@ -453,6 +466,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 8WV73T2R43;
 				INFOPLIST_FILE = FindMyBus/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -460,7 +474,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = Niobium.FindMyBus;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -471,6 +485,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 8WV73T2R43;
 				INFOPLIST_FILE = FindMyBus/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -478,7 +493,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = Niobium.FindMyBus;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};

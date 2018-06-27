@@ -15,20 +15,21 @@ class ViewController: UIViewController, UITextFieldDelegate, MKMapViewDelegate, 
     private var locationManager: CLLocationManager = CLLocationManager()
     private var currentLocation: CLLocationCoordinate2D!
     private let routeURL = "http://192.168.1.4:3000/positions/"
-    var timer: Timer?
-    let runLoop = RunLoop.current
+    let appDelegate = UIApplication.shared.delegate as! AppDelegate
+    private var timer: Timer?
+    private let runLoop = RunLoop.current
     var connection: APIRequest?
     weak var delegate: APIRequestDelegate?
-    var annotationView: MKAnnotationView?
-    var heading: Double = 0
-    //let image: UIimage()?
+    private var annotationView: MKAnnotationView?
+    private var heading: Double = 0
+    private let imageArr = [UIImage(named: "arrow16px.png"), UIImage(named: "arrow32px.png")]
+    private var imageZoom = UIImage(named: "arrow16px.png")!
     
     @IBOutlet weak var mapView: MKMapView!
     @IBOutlet weak var textBus: UITextField?
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        //mapView.mapType = .hybrid
         self.mapView.showsCompass = true
         self.mapView.showsScale = true
         self.mapView.showsUserLocation = true
@@ -39,15 +40,47 @@ class ViewController: UIViewController, UITextFieldDelegate, MKMapViewDelegate, 
         connection = APIRequest()
         connection?.delegate = self
         textBus?.delegate = self
+        enableLocationSeervices()
+    }
+    
+    func enableLocationSeervices() {
+        self.locationManager.delegate = self
         
-        if CLLocationManager.locationServicesEnabled()  == true {
-            self.locationManager.delegate = self
+        switch CLLocationManager.authorizationStatus() {
+        case .notDetermined:
+            // Request when-in-use authorization initially
+            locationManager.requestWhenInUseAuthorization()
+            break
+
+        case .restricted, .denied:
+            // Disable location features
+            break
+
+        case .authorizedWhenInUse, .authorizedAlways:
+             //Enable location features
             self.locationManager.desiredAccuracy = kCLLocationAccuracyBest
             self.locationManager.startUpdatingLocation()
             self.currentLocation = locationManager.location!.coordinate
             self.mapView.setRegion(MKCoordinateRegionMakeWithDistance(currentLocation, 10000, 10000), animated: true)
-            //locationManager.requestWhenInUseAuthorization()
+            break
         }
+    }
+    
+    /**
+     Creates a new timer and adds it to the runloop
+     - parameter timeInterval: The repeat interval in seconds the timer will be fired
+     **/
+    func startTimer(timeInterval: Int) {
+        self.timer = Timer(timeInterval: TimeInterval(timeInterval), target: self, selector: #selector(self.sendRequest), userInfo: nil, repeats: true)
+        self.runLoop.add(self.timer!, forMode: RunLoopMode.commonModes)
+    }
+    
+    /**
+     Removes timer from the run loop and sets refrence to nil. So timer can be cleaned up
+    **/
+    func killTimer() {
+        timer?.invalidate()
+        timer = nil
     }
         
     func urlSessionDidFinishEvents(forBackgroundURLSession session: URLSession) {
@@ -57,13 +90,17 @@ class ViewController: UIViewController, UITextFieldDelegate, MKMapViewDelegate, 
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textBus?.resignFirstResponder()
         mapView.removeAnnotations(busArr)
-        timer?.invalidate()
-        self.timer = Timer(timeInterval: 2, target: self, selector: #selector(self.sendRequest), userInfo: nil, repeats: true)
-            self.runLoop.add(self.timer!, forMode: RunLoopMode.commonModes)
+        killTimer()
+        startTimer(timeInterval: 4)
+//        self.timer = Timer(timeInterval: 4, target: self, selector: #selector(self.sendRequest), userInfo: nil, repeats: true)
+//            self.runLoop.add(self.timer!, forMode: RunLoopMode.commonModes)
         sendRequest()
         return true
     }
     
+     /**
+     Sends the url and query from the textbox to the APIRequest class for processing for a URLRequest
+     **/
     @objc func sendRequest() {
         self.connection?.sendRoutes(url: self.routeURL, query: (self.textBus?.text!)!)
         print("timer fired")
@@ -75,9 +112,7 @@ class ViewController: UIViewController, UITextFieldDelegate, MKMapViewDelegate, 
             self.busArr = []
         do {
             if let jsonDict = try JSONSerialization.jsonObject(with: data, options: []) as? NSDictionary {
-                //print(jsonDict)
                 if let response = jsonDict.value(forKey: "message") as? NSArray {
-                    //print(response)
                     for i in 0..<response.count {
                         let json = response.object(at: i) as! NSDictionary
                         let bus = json.value(forKey: "bus")
@@ -93,8 +128,8 @@ class ViewController: UIViewController, UITextFieldDelegate, MKMapViewDelegate, 
                         } else {
                         self.heading = bearing as! Double
                         }
-                        let image = UIImage(named: "arrow16px.png")
-                        let newImage = image?.imageRotatedByDegrees(degrees: CGFloat(self.heading), image: image!)
+                        let image = self.imageZoom
+                        let newImage = image.imageRotatedByDegrees(degrees: CGFloat(self.heading), image: image)
                         //self.mapView.selectAnnotation(self.mapView.annotations[i], animated: true)
                         marker.image = newImage
                         self.busArr.append(marker)
@@ -115,8 +150,21 @@ class ViewController: UIViewController, UITextFieldDelegate, MKMapViewDelegate, 
         self.mapView.setRegion(region, animated: true)
     }
     
+    /**
+     Tells the mapview delegate the mapview visible region was changed. The window size is checked then
+     the correct icon size is displayed on the map.
+     - parameter mapView: The map view whose visible region changed.
+     - parameter animated: If true, the change to the new region was animated.
+     */
     func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
         
+        let zoomWidth = mapView.visibleMapRect.size.width
+        print(zoomWidth)
+        if zoomWidth < 15000 {
+            imageZoom = imageArr[1]! //32px
+        } else {
+            imageZoom = imageArr[0]! //16px
+        }
     }
     
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
@@ -132,9 +180,41 @@ class ViewController: UIViewController, UITextFieldDelegate, MKMapViewDelegate, 
     return nil
     }
     
+    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
+        switch status {
+            case .restricted, .denied:
+                
+                let alert = UIAlertController(title: "Enable Location Services", message: "Location services should be enabled when using this app.", preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { action in
+                    if let url = URL(string: "App-Prefs:root=Privacy&path=LOCATION") {
+                        UIApplication.shared.open(url, options: [:], completionHandler: {
+                            (success) in
+                            self.enableLocationSeervices()
+                        })
+                    }
+                }))
+                alert.addAction(UIAlertAction(title: "Cancel", style: .default, handler: { action in
+                    manager.stopUpdatingLocation()
+                }))
+
+                self.present(alert, animated: true, completion: nil)
+            break
+            case .authorizedWhenInUse:
+                manager.startUpdatingLocation()
+            break
+            case .authorizedAlways:
+            break
+            
+            case .notDetermined:
+                locationManager.requestWhenInUseAuthorization()
+            break
+        }
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+        killTimer()
     }
 } //end class
 
@@ -155,7 +235,6 @@ extension UIImage {
         UIGraphicsBeginImageContext(rotatedSize)
         let bitmap = UIGraphicsGetCurrentContext()
         
-        // Move the origin to the middle of the image so we will rotate and scale around the center.
         // Move the origin to the middle of the image so we will rotate and scale around the center.
         bitmap?.translateBy(x: rotatedSize.width / 2.0, y: rotatedSize.height / 2.0)
         
