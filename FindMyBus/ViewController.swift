@@ -9,12 +9,14 @@
 import UIKit
 import MapKit
 
-class ViewController: UIViewController, UITextFieldDelegate, MKMapViewDelegate, CLLocationManagerDelegate, APIRequestDelegate {
+class ViewController: UIViewController, UITextFieldDelegate, MKMapViewDelegate, CLLocationManagerDelegate, APIRequestDelegate { //, UIGestureRecognizerDelegate
 
     private var busArr: [MKAnnotation] = []
+    private var stopArr: [MKAnnotation] = []
     private var locationManager: CLLocationManager = CLLocationManager()
     private var currentLocation: CLLocationCoordinate2D!
     private let routeURL = "http://192.168.1.4:3000/positions/"
+    private let stopURL = "http://192.168.1.4:3000/stops/"
     let appDelegate = UIApplication.shared.delegate as! AppDelegate
     private var timer: Timer?
     private let runLoop = RunLoop.current
@@ -23,24 +25,33 @@ class ViewController: UIViewController, UITextFieldDelegate, MKMapViewDelegate, 
     private var annotationView: MKAnnotationView?
     private var heading: Double = 0
     private let imageArr = [UIImage(named: "arrow16px.png"), UIImage(named: "arrow32px.png")]
+    private let stopImageArr = [UIImage(named: "bus_stop12px.png"), nil]
+    private var stopImage = UIImage(named: "bus_stop12px.png")
     private var imageZoom = UIImage(named: "arrow16px.png")!
     
     @IBOutlet weak var mapView: MKMapView!
     @IBOutlet weak var textBus: UITextField?
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        //set references and delegates
+        connection = APIRequest()
+        connection?.delegate = self
+        textBus?.delegate = self
+        
+        appDelegate.vc = ViewController()
+        
+        //do mapview setup
         self.mapView.showsCompass = true
         self.mapView.showsScale = true
         self.mapView.showsUserLocation = true
         self.mapView.isRotateEnabled = false
         self.mapView.isPitchEnabled = false
         self.mapView.delegate = self
-
-        connection = APIRequest()
-        connection?.delegate = self
-        textBus?.delegate = self
         enableLocationSeervices()
+        connection?.requestData(url: stopURL)
+        
     }
     
     func enableLocationSeervices() {
@@ -92,8 +103,6 @@ class ViewController: UIViewController, UITextFieldDelegate, MKMapViewDelegate, 
         mapView.removeAnnotations(busArr)
         killTimer()
         startTimer(timeInterval: 4)
-//        self.timer = Timer(timeInterval: 4, target: self, selector: #selector(self.sendRequest), userInfo: nil, repeats: true)
-//            self.runLoop.add(self.timer!, forMode: RunLoopMode.commonModes)
         sendRequest()
         return true
     }
@@ -102,8 +111,38 @@ class ViewController: UIViewController, UITextFieldDelegate, MKMapViewDelegate, 
      Sends the url and query from the textbox to the APIRequest class for processing for a URLRequest
      **/
     @objc func sendRequest() {
-        self.connection?.sendRoutes(url: self.routeURL, query: (self.textBus?.text!)!)
-        print("timer fired")
+        self.connection?.requestData(url: self.routeURL, query: (self.textBus?.text!)!)
+        //print("timer fired")
+    }
+    
+    func getStops(data: Data) {
+        DispatchQueue.main.async { //remove annotations and build annotations on the main thread
+            self.mapView.removeAnnotations(self.stopArr)
+            self.stopArr = []
+        do {
+            if let jsonDict = try JSONSerialization.jsonObject(with: data, options: []) as? NSDictionary {
+                if let response = jsonDict.value(forKey: "message") as? NSArray {
+                    for i in 0..<response.count {
+                        let json = response.object(at: i) as! NSDictionary
+                        //let id = json.value(forKey: "stop_id")
+                        let name = json.value(forKey: "stop_name")
+                        let code = json.value(forKey: "stop_code")
+                        let latitude = json.value(forKey: "latitude") as! Double
+                        let longitude = json.value(forKey: "longitude") as! Double
+                        let marker = Bus(title: code as! String, subtitle: name as! String, discipline: "stop", coordinate: CLLocationCoordinate2D(latitude: latitude, longitude: longitude))
+                        
+                        marker.image = self.stopImage
+                        self.stopArr.append(marker)
+                        //self.mapView.addAnnotations(self.stopArr)
+                    }
+                }
+            }
+        } catch let error as NSError {
+            print(error.localizedDescription)
+        } //end do
+            //self.mapView.addAnnotations(self.stopArr)
+        }
+        
     }
     
     func getData(data: Data) {
@@ -130,16 +169,16 @@ class ViewController: UIViewController, UITextFieldDelegate, MKMapViewDelegate, 
                         }
                         let image = self.imageZoom
                         let newImage = image.imageRotatedByDegrees(degrees: CGFloat(self.heading), image: image)
-                        //self.mapView.selectAnnotation(self.mapView.annotations[i], animated: true)
                         marker.image = newImage
                         self.busArr.append(marker)
-                        self.mapView.addAnnotations(self.busArr)
+                        
                     }
                 }
             }
             } catch let error as NSError {
             print(error.localizedDescription)
         } //end do
+        self.mapView.addAnnotations(self.busArr)
         }
     } //end func
     
@@ -157,13 +196,17 @@ class ViewController: UIViewController, UITextFieldDelegate, MKMapViewDelegate, 
      - parameter animated: If true, the change to the new region was animated.
      */
     func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
-        
+
         let zoomWidth = mapView.visibleMapRect.size.width
         print(zoomWidth)
-        if zoomWidth < 15000 {
-            imageZoom = imageArr[1]! //32px
+        if Int(zoomWidth) < 15000  {
+            self.mapView.addAnnotations(self.stopArr)
+        } else if Int(zoomWidth) >= 15000 && Int(zoomWidth) < 20000 {
+            imageZoom = imageArr[0]! //16px
+            self.mapView.addAnnotations(self.stopArr)
         } else {
             imageZoom = imageArr[0]! //16px
+            self.mapView.removeAnnotations(self.stopArr)
         }
     }
     
@@ -183,7 +226,6 @@ class ViewController: UIViewController, UITextFieldDelegate, MKMapViewDelegate, 
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
         switch status {
             case .restricted, .denied:
-                
                 let alert = UIAlertController(title: "Enable Location Services", message: "Location services should be enabled when using this app.", preferredStyle: .alert)
                 alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { action in
                     if let url = URL(string: "App-Prefs:root=Privacy&path=LOCATION") {
@@ -196,15 +238,13 @@ class ViewController: UIViewController, UITextFieldDelegate, MKMapViewDelegate, 
                 alert.addAction(UIAlertAction(title: "Cancel", style: .default, handler: { action in
                     manager.stopUpdatingLocation()
                 }))
-
                 self.present(alert, animated: true, completion: nil)
             break
             case .authorizedWhenInUse:
                 manager.startUpdatingLocation()
             break
             case .authorizedAlways:
-            break
-            
+            break            
             case .notDetermined:
                 locationManager.requestWhenInUseAuthorization()
             break

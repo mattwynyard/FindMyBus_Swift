@@ -11,12 +11,11 @@ import Foundation
 internal protocol APIRequestDelegate: class {
     
     func getData(data: Data)
-    //func removeAnnotations()
+    func getStops(data: Data)
 }
 
 class APIRequest: NSObject {
 
-    //private var jsonResponse: String?
     weak var delegate: APIRequestDelegate?
 
 func httpGet(url: String, query: String, callback: @escaping (Data, String?) -> Void) {
@@ -25,8 +24,7 @@ func httpGet(url: String, query: String, callback: @escaping (Data, String?) -> 
     url.httpMethod = "GET"
     url.addValue("application/json", forHTTPHeaderField: "Accept")
     url.timeoutInterval = 30
-    
-    
+        
     let task = URLSession.shared.dataTask(with: url, completionHandler: {(data, response, error) in
         if let error = error {
             print(url)
@@ -39,18 +37,27 @@ func httpGet(url: String, query: String, callback: @escaping (Data, String?) -> 
     })
     task.resume()
 } //end func
+    
+    func requestData(url: String) {
+        print(url)
+        self.httpGet(url: url, query: "") { (data, error) -> Void in
+            if error != nil {
+                print(error!)
+            } else {
+                print("Requesting stops..")
+                self.delegate?.getStops(data: data)
+            }
+        } //end closure
+    } //end fun
 
-func sendRoutes(url: String, query: String) {
+func requestData(url: String, query: String) {
 
-    //DispatchQueue.main.async (execute: { () -> Void in
         self.httpGet(url: url, query: query) { (data, error) -> Void in
             if error != nil {
                 print(error!)
             } else {
                 print("Sending Request..")
-                //self.delegate?.removeAnnotations()
                 self.delegate?.getData(data: data)
-               
             }
         } //end closure
     //})

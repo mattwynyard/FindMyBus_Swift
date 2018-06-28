@@ -19,6 +19,9 @@
 		C97694FE20DB9243004FCC02 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C97694FB20DB9243004FCC02 /* ViewController.swift */; };
 		C97694FF20DB9243004FCC02 /* APIRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = C97694FC20DB9243004FCC02 /* APIRequest.swift */; };
 		C976950020DB9243004FCC02 /* Bus.swift in Sources */ = {isa = PBXBuildFile; fileRef = C97694FD20DB9243004FCC02 /* Bus.swift */; };
+		C9AF270720E47247002079F4 /* bus20px.png in Resources */ = {isa = PBXBuildFile; fileRef = C9AF270620E47247002079F4 /* bus20px.png */; };
+		C9AF270B20E47B38002079F4 /* bus_stop16px.png in Resources */ = {isa = PBXBuildFile; fileRef = C9AF270A20E47B38002079F4 /* bus_stop16px.png */; };
+		C9AF270D20E48195002079F4 /* bus_stop12px.png in Resources */ = {isa = PBXBuildFile; fileRef = C9AF270C20E48195002079F4 /* bus_stop12px.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -57,6 +60,9 @@
 		C97694FB20DB9243004FCC02 /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		C97694FC20DB9243004FCC02 /* APIRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIRequest.swift; sourceTree = "<group>"; };
 		C97694FD20DB9243004FCC02 /* Bus.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Bus.swift; sourceTree = "<group>"; };
+		C9AF270620E47247002079F4 /* bus20px.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = bus20px.png; path = Images/bus20px.png; sourceTree = "<group>"; };
+		C9AF270A20E47B38002079F4 /* bus_stop16px.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = bus_stop16px.png; path = Images/bus_stop16px.png; sourceTree = "<group>"; };
+		C9AF270C20E48195002079F4 /* bus_stop12px.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = bus_stop12px.png; path = Images/bus_stop12px.png; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -94,6 +100,8 @@
 		C97694BE20DB91DA004FCC02 = {
 			isa = PBXGroup;
 			children = (
+				C9AF270A20E47B38002079F4 /* bus_stop16px.png */,
+				C9AF270620E47247002079F4 /* bus20px.png */,
 				C9121F5A20E218A300A9A813 /* arrow16px.png */,
 				C9121F5620E210B400A9A813 /* arrow32px.png */,
 				C97694C920DB91DA004FCC02 /* FindMyBus */,
@@ -122,6 +130,7 @@
 				C97694FC20DB9243004FCC02 /* APIRequest.swift */,
 				C97694FD20DB9243004FCC02 /* Bus.swift */,
 				C97694FB20DB9243004FCC02 /* ViewController.swift */,
+				C9AF270C20E48195002079F4 /* bus_stop12px.png */,
 				C97694D420DB91DA004FCC02 /* Assets.xcassets */,
 				C97694D620DB91DA004FCC02 /* LaunchScreen.storyboard */,
 				C97694D920DB91DA004FCC02 /* Info.plist */,
@@ -210,6 +219,9 @@
 		C97694BF20DB91DA004FCC02 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				KnownAssetTags = (
+					LaunchImage,
+				);
 				LastSwiftUpdateCheck = 0940;
 				LastUpgradeCheck = 0940;
 				ORGANIZATIONNAME = Niobium;
@@ -257,9 +269,12 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C9AF270720E47247002079F4 /* bus20px.png in Resources */,
 				C97694D820DB91DA004FCC02 /* LaunchScreen.storyboard in Resources */,
+				C9AF270B20E47B38002079F4 /* bus_stop16px.png in Resources */,
 				C9121F5720E210B400A9A813 /* arrow32px.png in Resources */,
 				C9121F5B20E218A300A9A813 /* arrow16px.png in Resources */,
+				C9AF270D20E48195002079F4 /* bus_stop12px.png in Resources */,
 				C97694D520DB91DA004FCC02 /* Assets.xcassets in Resources */,
 				C97694D020DB91DA004FCC02 /* Main.storyboard in Resources */,
 			);
@@ -463,6 +478,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 8WV73T2R43;
 				INFOPLIST_FILE = FindMyBus/Info.plist;
@@ -482,6 +498,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 8WV73T2R43;
 				INFOPLIST_FILE = FindMyBus/Info.plist;

@@ -22,7 +22,15 @@ class Bus: NSObject, MKAnnotation {
         self.discipline = discipline
         self.coordinate = coordinate
         //self.image
-        
         super.init()
+    }
+        
+        init(title: String, subtitle: String, discipline: String, image: UIImage, coordinate: CLLocationCoordinate2D) {
+        self.title = title
+        self.subtitle = subtitle
+        self.discipline = discipline
+        self.coordinate = coordinate
+            //self.image
+        super.init()        
     } //end init
 }//end class
